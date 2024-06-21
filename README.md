@@ -14,13 +14,7 @@ Table of Contents
     - [Configure the environment variables in Windows](#windows-installer)
 - [Installing the Dependencies](#Insttall-the-dependencies)
 - [Start the application](#start)
-- [REST APIS and endpoints](#rest-api-and-endpoints)
-  - [List of all parts](#list-of-all-parts)
-  - [Post one part](#post-one-part)
-  - [Update one part](#update-one-part)
-  - [Delete one part](#delete-one-part)
-  - [Retrieve a specific part](#retrieve-a-specific-part)
-  - [Common Words](#get-the-5-most-common-words-in-descriptions)
+
 ## Prerequisites
 
 Before you start, ensure you have the following installed on your system:
