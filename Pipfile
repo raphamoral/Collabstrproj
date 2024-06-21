@@ -10,6 +10,8 @@ requests = "*"
 redis = "*"
 celery = "*"
 gunicorn = "*"
+dj-database-url = "*"
+python-decouple = "*"
 
 [dev-packages]
 
