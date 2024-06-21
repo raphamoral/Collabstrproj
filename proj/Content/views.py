@@ -18,6 +18,7 @@ def content_list(request):
     ]
     return render(request, 'content_list.html', {'contents': content_data})
 
+
 def filter_content(request):
     platform = request.GET.get('platform', None)
     if platform:
