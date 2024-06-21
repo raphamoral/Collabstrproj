@@ -1,0 +1,123 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>Collabstr | Creators</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    <meta charset="UTF-8">
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-row">
+            <div>
+                <img alt="Collabstr logo" class="full-logo-img" src="https://d5ik1gor6xydq.cloudfront.net/websiteImages/logo.svg"/>
+            </div>
+        </div>
+    </div>
+    <div class="tabs">
+        <button class="tab" data-platform="Instagram">Instagram</button>
+        <button class="tab" data-platform="TikTok">TikTok</button>
+        <button class="tab" data-platform="User Generated Content">User Generated Content</button>
+    </div>
+    <div id="content" style="flex-wrap: wrap ; flex:1 ; justify-content: space-between; ">
+        {% for content in contents %}
+
+        <div class="content-item">
+
+                {% if content.is_video %}
+                <video width="300" controls>
+                    <source src="{{ content.content_url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <img src="{{ content.content_url }}" alt="content image" width="300">
+                {% endif %}
+                <p><strong>Creator:</strong> {{ content.creator_name }}</p>
+                <p><strong>Rating:</strong> {{ content.creator_rating }}</p>
+                <button onclick="downloadContent('{{ content.content_url }}')">Download</button>
+                {% if content.is_video %}
+                    <button onclick="playVideo('{{ content.content_url }}')">Play Video</button>
+                {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function downloadContent(url) {
+            window.location.href = url;
+        }
+
+        function playVideo(url) {
+            window.open(url, '_blank');
+        }
+
+        $(document).ready(function() {
+            $('.tab').click(function() {
+                var platform = $(this).data('platform');
+                $.ajax({
+                    url: "{% url 'filter_content' %}",
+                    data: {
+                        'platform': platform
+                    },
+                    success: function(data) {
+                        var contentList = $('#content');
+                        contentList.empty();
+                        data.contents.forEach(function(content) {
+                            var contentItem = '<div class="content-item">';
+                            if (content.is_video) {
+                                contentItem += '<video width="300" controls><source src="' + content.content_url + '" type="video/mp4">Your browser does not support the video tag.</video>';
+                            } else {
+                                contentItem += '<img src="' + content.content_url + '" alt="content image" width="300">';
+                            }
+                            contentItem += '<p><strong>Creator:</strong> ' + content.creator_name + '</p>' +
+                                           '<p><strong>Rating:</strong> ' + content.creator_rating + '</p>' +
+                                           '<button onclick="downloadContent(\'' + content.content_url + '\')">Download</button>';
+                            if (content.is_video) {
+                                contentItem += '<button onclick="playVideo(\'' + content.content_url + '\')">Play Video</button>';
+                            }
+                            contentItem += '</div>';
+                            contentList.append(contentItem);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
