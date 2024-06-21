@@ -9,6 +9,7 @@ djangorestframework = "*"
 requests = "*"
 redis = "*"
 celery = "*"
+gunicorn = "*"
 
 [dev-packages]
 
