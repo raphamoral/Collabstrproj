@@ -12,6 +12,7 @@ celery = "*"
 gunicorn = "*"
 dj-database-url = "*"
 python-decouple = "*"
+whitenoise = "*"
 
 [dev-packages]
 
